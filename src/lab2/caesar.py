@@ -34,12 +34,14 @@ def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
     >>> decrypt_caesar("")
     ''
     """
-    plaintext = ""
+    plaintext = []
     for char in ciphertext:
         if char.isalpha():
-            shift_base = ord("A") if char.isupper() else ord("a")
+            shift_base = ord('A') if char.isupper() else ord('a')
+           
             new_char = chr((ord(char) - shift_base - shift) % 26 + shift_base)
-            plaintext += new_char
+            plaintext.append(new_char)  
         else:
-            plaintext += char
-    return plaintext
+            plaintext.append(char)  
+
+    return ''.join(plaintext)  
