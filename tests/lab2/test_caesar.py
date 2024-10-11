@@ -2,7 +2,6 @@ import unittest
 import os
 import sys
 
-# Menambahkan jalur src ke sys.path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src')))
 
 import lab2.caesar
