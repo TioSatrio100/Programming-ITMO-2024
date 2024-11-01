@@ -1,6 +1,8 @@
 import pathlib
 import typing as tp
 import random
+import threading
+import time
 
 T = tp.TypeVar("T")
 
@@ -301,18 +303,26 @@ def generate_sudoku(cnt_el: int) -> tp.List[tp.List[str]]:
     return grid
 
 
+def run_solve(filename: str) -> None:
+    grid = read_sudoku(filename)
+    start = time.time()  
+    solution = solve(grid)  
+    end = time.time()  
+    
+    print(f"{filename}: {end - start:.4f} seconds")  
+
 if __name__ == "__main__":
-    for fname in ["c:/Users/M S I/cs102/src/lab3/puzzle1.txt", "c:/Users/M S I/cs102/src/lab3/puzzle2.txt", "c:/Users/M S I/cs102/src/lab3/puzzle3.txt"]:
-        grid = read_sudoku(fname)
-        print(f"Original sudoku {fname}")
-        display(grid)
-        solution = grid_solution(grid)
-        if check_solution(solution):
-            print("Puzzle successful solved")
-            if not solve(grid):
-                print(f"Puzzle {fname} can't be solved, mb it incorrect")
-            else:
-                print(f"Solve sudoku {fname}")
-                display(solution)
-        else:
-            print("Hmm, probably program is not perfect, because solution not right\n")
+    threads = []
+    filenames = [
+        "c:/Users/M S I/cs102/src/lab3/puzzle1.txt",
+        "c:/Users/M S I/cs102/src/lab3/puzzle2.txt",
+        "c:/Users/M S I/cs102/src/lab3/puzzle3.txt"
+    ]
+
+    for filename in filenames:
+        t = threading.Thread(target=run_solve, args=(filename,))
+        t.start()
+        threads.append(t)
+
+    for t in threads:
+        t.join() 
